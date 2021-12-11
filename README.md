@@ -3,6 +3,8 @@ I've created this to explain to KS3 and KS4 pupils how image format, resolution 
 
 It takes the following arguments from the CLI.  
 * --file  (Input filename path.  Default: poole-park.jpg)
+* --path  (Output file path where all files are created.  Default: images)
+* --out   (Output file of a HTML summary of the files created.  Default: index.html)
 
 ## Packages Used
 The following packages are used:
