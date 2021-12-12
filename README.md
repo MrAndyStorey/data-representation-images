@@ -10,9 +10,14 @@ It takes the following arguments from the CLI.
 The following packages are used:
 * [Pillow](https://pillow.readthedocs.io/en/stable/index.html) Pillow is a powerful library that you can use for general purpose image processing.
 * [NumPy](https://numpy.org/) NumPy is a scientific computing library for Python and it can be used to speed up some pixel-by-pixel operations that Pillow is a little slow for.
+* [scikit-learn](https://pypi.org/project/scikit-learn/) I started this coding project with PILLOW, but soon encountered too many issues with downsizing the colour depths beyond 2bits.
+* [opencv-python](https://pypi.org/project/opencv-python/) OpenCV library for image processing which integrates better with scikit-learn than Pillow.
+
 
 To install these packages, you should use Python's package installer, pip3.  On the MacOS CLI you can use these commands:
 ```
 pip3 install Pillow
 pip3 install numpy
+pip3 install scikit-learn
+pip3 install opencv-python
 ```

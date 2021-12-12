@@ -1,12 +1,35 @@
 #!/usr/bin/env python3
+# General purpose libs
+import sys
 import os
+
+# Used to read the arguments passed using the CLI
 import argparse
 
-import sys
+# Used for Image Scaling
 from PIL import Image
 
+# Used for Colour Depth Reduction
+import cv2
+import numpy as np
+from sklearn.cluster import MiniBatchKMeans
 
+# Used to display the web browser window.
 from webbrowser import open_new_tab
+
+def reduceColourDepth(passedInput, passedOutput, passedPaletteData, passedMultipler):  
+  #Create a reduced colour palette
+  palimage = Image.new('P', (16, 16))
+  palimage.putpalette(passedPaletteData * passedMultipler)
+
+  #Open the image that we'll be working with
+  oldimage = Image.open(passedInput)
+  newimage = oldimage.quantize(palette=palimage).convert('RGB')
+  
+  #Save the new file
+  newimage.save(passedOutput)
+  return passedOutput
+
 
 def scaleImage(passedInput, passedOutput, width=None, height=None, createFilename=False):  
   #Open the image that we'll be working with and get it's existing height and width
@@ -53,9 +76,22 @@ def createDifferentResolutions(passedInput, passedPath):
 
 
 def createDifferentColourDepths(passedInput, passedPath):
-  print("Colour depth files will be created in: " + passedPath)
+
+  tempfilename = os.path.join(os.getcwd(), passedPath, passedInput)
+  print("Colour depth versions will be created from: " + tempfilename)
+
+  palettedata_1bit = [0,0,0, 255,255,255]
+  palettedata_2bit = [0,0,0, 255,255,255, 102,102,102, 176,176,176]
+  palettedata_3bit = [0,0,0, 255,255,255, 255,0,0, 255,255,0, 0,255,0, 85,255,85, 255,85,85, 255,255,85] 
+  palettedata_4bit = [0,0,0, 255,255,255, 102,102,102, 176,176,176,  255,0,0, 0,255,0, 0,0,255, 255,255,0, 255,0,255, 0,255,255, 85,85,85, 255,85,85, 85,255,85, 85,85,255, 255,255,85, 85,255,255] 
+  
+  filename_1bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-1bit.jpg"), palettedata_1bit, 128)
+  filename_2bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-2bit.jpg"), palettedata_2bit, 64)
+  filename_3bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-3bit.jpg"), palettedata_3bit, 32)
+  filename_4bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-4bit.jpg"), palettedata_4bit, 16)
 
   return os.path.join(os.getcwd(), passedPath)
+
 
 
 def extractMetaData(passedInput):
@@ -90,7 +126,7 @@ if __name__ == '__main__':
   createDifferentResolutions(args.file, args.path)
 
   # Create different colour depth versions of the medium size image  
-  createDifferentColourDepths(args.file, args.path)
+  createDifferentColourDepths("500-375.jpg", args.path)
 
   # Extract some (interesting) metadata from the original file.
   extractMetaData(args.file)
