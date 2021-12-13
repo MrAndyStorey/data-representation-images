@@ -5,19 +5,17 @@ It takes the following arguments from the CLI.
 * --file  (Input filename path.  Default: poole-park.jpg)
 * --path  (Output file path where all files are created.  Default: images)
 * --out   (Output file of a HTML summary of the files created.  Default: index.html)
+* --template (Output file template file.  Default: template.html)
 
 ## Packages Used
 The following packages are used:
-* [Pillow](https://pillow.readthedocs.io/en/stable/index.html) Pillow is a powerful library that you can use for general purpose image processing.
-* [NumPy](https://numpy.org/) NumPy is a scientific computing library for Python and it can be used to speed up some pixel-by-pixel operations that Pillow is a little slow for.
-* [scikit-learn](https://pypi.org/project/scikit-learn/) I started this coding project with PILLOW, but soon encountered too many issues with downsizing the colour depths beyond 2bits.
-* [opencv-python](https://pypi.org/project/opencv-python/) OpenCV library for image processing which integrates better with scikit-learn than Pillow.
-
+* [Pillow](https://pypi.org/project/Pillow/) Pillow is a powerful library that you can use for general purpose image processing.
+* [jinja2](https://pypi.org/project/Jinja2/) Jinja is a templating language for use with Python - commonly used with Flask.
+* [exif](https://pypi.org/project/exif/) Python library used to read and modify image EXIF metadata.
 
 To install these packages, you should use Python's package installer, pip3.  On the MacOS CLI you can use these commands:
 ```
 pip3 install Pillow
-pip3 install numpy
-pip3 install scikit-learn
-pip3 install opencv-python
+pip3 install Jinja2
+pip3 install exif
 ```
