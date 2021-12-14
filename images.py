@@ -8,6 +8,7 @@ import argparse
 
 # Used for Image Scaling
 from PIL import Image, ExifTags
+from PIL.ExifTags import GPSTAGS
 
 # Used for rendering the html output file.  Jinja2 is used under the hood of Flask, and as it does a nice job, we'll use it again here.
 import jinja2
@@ -142,9 +143,9 @@ def extractMetaData(passedInput):
   
   exifData = {}
   for tag, value in img_exif.items():
-      decodedTag = ExifTags.TAGS.get(tag, tag)
-      exifData[decodedTag] = value
-  
+    decodedTag = ExifTags.TAGS.get(tag, tag)
+    exifData[decodedTag] = value
+
   return exifData
 
 

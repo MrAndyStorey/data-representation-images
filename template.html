@@ -11,7 +11,7 @@
         This pages looks at concepts such as <b>Image size</b>, <b>Resolution</b>, <b>Colour Depth</b>, and <b>Metadata</b> providing some real-life examples of how these affect the images that you see on a computer screen.</p>
 
         <h3>Image size</h3>
-        <p>Images stored on a computer, smart phone or tablet are made up of pixels. Each pixel is represented by a binary number.  Image size is simply the number of pixels that an image contains and is simply expressed as height and width.        </p>       
+        <p>Images stored on a computer, smart phone or tablet are made up of pixels. Each pixel is represented by a binary number.  <b>Image size</b> is simply the number of pixels that an image contains and is simply expressed as height and width.        </p>       
 
         {% for key, value in resolutions.items() %}
         <p><img src="{{ value['filename'] }}" alt="{{ value['filename'] }}" height="{{ value['height'] }}" width="{{ value['width'] }}" /><br />
@@ -22,11 +22,11 @@
         <p>&nbsp;</p>       
 
         <h3>Resolution</h3>
-        <p>Image quality is affected by the resolution of the image. The resolution of an image is a way of describing how tightly packed the pixels are.</p>       
+        <p>Image quality is affected by the resolution of the image. The <b>resolution</b> of an image is a way of describing how tightly packed the pixels are.</p>       
         <p>&nbsp;</p>       
         
         <h3>Colour Depth</h3>    
-        <p>Many images need to use colours. To add colour, more bits are required to represent each colour for each pixel. The number of bits determines the range of colours and this is known as colour depth.</p>       
+        <p>Many images need to use colours. To add colour, more bits are required to represent each colour for each pixel. The <b>colour depth</b> is the number of bits used to indicate different colours of a pixel.When the colour depth increases, as does the size of the file.</p>
         <p><table>
         {% for key, value in colourdepths.items() %}
         {% if loop.index % 2 != 0 %}
@@ -45,7 +45,7 @@
         <p>&nbsp;</p>       
 
         <h3>Metadata</h3>    
-        <p>Metadata is data about data.  Many files contain extra data, and in many cases, the images taken with digital cameras and/or smartphones contain rich information as well as the visible pixels.
+        <p><b>Metadata</b> is data about data.  Many files contain extra data, and in many cases, the images taken with digital cameras and/or smartphones contain rich information as well as the visible pixels.
         This image metadata is stored in EXIF (Exchangeable image file format) and here we have use a Python library called <a href="https://pypi.org/project/exif/">exif</a> to extract the data such as:</p>
         <uL><li>camera model</li><li>date taken</li><li>height and width</li><li>resolution</li></uL>
         <p>The information below has been extracted from the original photo <i>{{ filename }}:</i></p>
@@ -56,10 +56,9 @@
             {% endfor %}
 
         </table>
-        <p>&nbsp;</p>       
-
         
         <p>&nbsp;</p>       
         <p>This page was created automatically using the following <a href="https://github.com/MrAndyStorey/data-representation-images">Python script</a>.</p>
+        <p>&nbsp;</p>       
 </body>
 </html>
