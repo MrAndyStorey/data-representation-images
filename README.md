@@ -13,6 +13,8 @@ The following packages are used:
 * [jinja2](https://pypi.org/project/Jinja2/) Jinja is a templating language for use with Python - commonly used with Flask.
 * [exif](https://pypi.org/project/exif/) Python library used to read and modify image EXIF metadata.
 
+A quick note about Pillow. I used Mike Driscoll's [Pillow: Image Processing with Python Kindle Edition](https://www.amazon.co.uk/Pillow-Processing-Python-Michael-Driscoll-ebook/dp/B08ZCQM1C1) to help me learn it in quickly and it turned out to be a very helpful read.  Not only that, [Mike is very active on Twitter](https://twitter.com/driscollis) and often answers follower's questions on Python which is incrediblly helpful.
+
 To install these packages, you should use Python's package installer, pip3.  On the MacOS CLI you can use these commands:
 ```
 pip3 install Pillow

@@ -16,7 +16,7 @@
         {% for key, value in resolutions.items() %}
         <p><img src="{{ value['filename'] }}" alt="{{ value['filename'] }}" height="{{ value['height'] }}" width="{{ value['width'] }}" /><br />
         {{ value['width'] }}&nbsp;x&nbsp;{{ value['height'] }}&nbsp;pixels<br />
-        {{ value['filesize'] }}&nbsp;bytes<br /></p>
+        {{ value['filesize'] | filesizeformat }}&nbsp;bytes<br /></p>
         {% endfor %}
 
         <p>&nbsp;</p>       
@@ -35,7 +35,7 @@
 
         <td><img src="{{ value['filename'] }}" alt="{{ value['filename'] }}" height="{{ value['height'] }}" width="{{ value['width'] }}" /><br />
         {{ key }}<br />
-        {{ value['filesize'] }}&nbsp;bytes</td>
+        {{ value['filesize'] | filesizeformat }}&nbsp;bytes</td>
         
         {% if loop.index % 2 == 0 %}
         </tr>
