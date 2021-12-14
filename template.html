@@ -11,15 +11,37 @@
         This pages looks at concepts such as <b>Image size</b>, <b>Resolution</b>, <b>Colour Depth</b>, and <b>Metadata</b> providing some real-life examples of how these affect the images that you see on a computer screen.</p>
 
         <h3>Image size</h3>
-        <p>Images stored on a computer, smart phone or tablet are made up of pixels. Each pixel is represented by a binary number.</p>       
+        <p>Images stored on a computer, smart phone or tablet are made up of pixels. Each pixel is represented by a binary number.  Image size is simply the number of pixels that an image contains and is simply expressed as height and width.        </p>       
+
+        {% for key, value in resolutions.items() %}
+        <p><img src="{{ value['filename'] }}" alt="{{ value['filename'] }}" height="{{ value['height'] }}" width="{{ value['width'] }}" /><br />
+        {{ value['width'] }}&nbsp;x&nbsp;{{ value['height'] }}&nbsp;pixels<br />
+        {{ value['filesize'] }}&nbsp;bytes<br /></p>
+        {% endfor %}
+
         <p>&nbsp;</p>       
 
         <h3>Resolution</h3>
-        <p></p>       
+        <p>Image quality is affected by the resolution of the image. The resolution of an image is a way of describing how tightly packed the pixels are.</p>       
         <p>&nbsp;</p>       
         
         <h3>Colour Depth</h3>    
-        <p></p>       
+        <p>Many images need to use colours. To add colour, more bits are required to represent each colour for each pixel. The number of bits determines the range of colours and this is known as colour depth.</p>       
+        <p><table>
+        {% for key, value in colourdepths.items() %}
+        {% if loop.index % 2 != 0 %}
+        <tr>
+        {% endif %}
+
+        <td><img src="{{ value['filename'] }}" alt="{{ value['filename'] }}" height="{{ value['height'] }}" width="{{ value['width'] }}" /><br />
+        {{ key }}<br />
+        {{ value['filesize'] }}&nbsp;bytes</td>
+        
+        {% if loop.index % 2 == 0 %}
+        </tr>
+        {% endif %}
+        {% endfor %}
+        </table></p>
         <p>&nbsp;</p>       
 
         <h3>Metadata</h3>    

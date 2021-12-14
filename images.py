@@ -26,7 +26,17 @@ def reduceColourDepth(passedInput, passedOutput, passedPaletteData, passedMultip
   
   #Save the new file as a PNG - this will give a more realistic difference in the resultant file sizes.
   newimage.save(passedOutput, format="png")
-  return passedOutput
+
+  returnedValuesWidth = newimage.size[0]
+  returnedValuesHeight = newimage.size[1]
+  returnedValuesFileSize = os.path.getsize(passedOutput)
+  
+  # Close the images
+  palimage.close
+  oldimage.close
+  newimage.close
+
+  return os.path.basename(passedOutput), returnedValuesFileSize, returnedValuesWidth, returnedValuesHeight
 
 
 def scaleImage(passedInput, passedOutput, width=None, height=None, createFilename=False):  
@@ -55,27 +65,34 @@ def scaleImage(passedInput, passedOutput, width=None, height=None, createFilenam
   else:
     createdFilename = passedOutput
     image.save(passedOutput)
+  
+  # Assign Return Values
+  returnedValuesWidth = image.size[0]
+  returnedValuesHeight = image.size[1]
+  returnedValuesFileSize = os.path.getsize(os.path.join(os.getcwd(), passedOutput, createdFilename))
 
   # Close the image
   image.close
 
-  return createdFilename
+  return createdFilename, returnedValuesFileSize, returnedValuesWidth, returnedValuesHeight
 
 
 def createDifferentResolutions(passedInput, passedPath):
   # First up, we've created a list of maximum widths that we'd like to create
-  widthRanges = (100, 500, 1000, 2000)
+  widthRanges = (100, 500, 1000, 1500)
+  createdImages = {}
 
   # For each fo those, create a new smaller version of the file using the scaleImage function
   for currentWidth in widthRanges:
-    print(scaleImage(passedInput=passedInput,passedOutput=passedPath,width=currentWidth, createFilename=True))
+    retdFilename, retdFileSize, retdW, retdH = scaleImage(passedInput=passedInput,passedOutput=passedPath,width=currentWidth, createFilename=True)
 
-  return os.path.join(os.getcwd(), passedPath)
+    createdImages[currentWidth] = {'filename': retdFilename,'filesize': retdFileSize,'width': retdW,'height': retdH}
+  return createdImages
 
 
 def createDifferentColourDepths(passedInput, passedPath):
-
   tempfilename = os.path.join(os.getcwd(), passedPath, passedInput)
+  createdImages = {}
 
   # This colour palette has only black and white - only one bit per pixel.
   palettedata_1bit = [0,0,0, 255,255,255]
@@ -98,15 +115,25 @@ def createDifferentColourDepths(passedInput, passedPath):
   # 6-bit, 64 colour palette that I have implemented from the following URL: https://lospec.com/palette-list/endesga-64
   palettedata_6bit = [255,0,64, 19,19,19, 27,27,27, 39,39,39, 61,61,61, 93,93,93, 133,133,133, 180,180,180, 255,255,255, 199,207,221, 146,161,185, 101,115,146, 66,76,110, 42,47,78, 26,25,50, 14,7,27, 28,18,28, 57,31,33, 93,44,40, 138,72,54, 191,111,74, 230,155,105, 246,203,159, 249,230,207, 237,172,80, 224,115,56, 198,68,36, 142,37,29, 255,81,0, 237,118,20, 255,161,20, 255,201,37, 255,235,87, 210,252,126, 154,230,95, 91,197,79, 51,152,75, 30,111,80, 19,76,76, 12,46,68, 0,56,109, 0,105,170, 0,150,220, 0,203,249, 12,243,255, 148,253,255, 253,210,237, 243,137,245, 218,63,253, 121,9,250, 49,3,217, 12,2,147, 3,25,63, 59,20,67, 98,36,97, 147,56,142, 202,82,200, 200,80,134, 246,129,135, 245,85,93, 234,50,60, 196,36,47, 137,30,42, 87,28,39]
 
-  filename_1bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-1bit.png"), palettedata_1bit, 128)
-  filename_2bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-2bit.png"), palettedata_2bit, 64)
-  filename_3bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-3bit.png"), palettedata_3bit, 32)
-  filename_4bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-4bit.png"), palettedata_4bit, 16)
-  filename_4bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-4bit-mono.png"), palettedata_4bit_mono, 16)
-  filename_5bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-5bit.png"), palettedata_5bit, 8)
-  filename_6bit=reduceColourDepth(tempfilename, tempfilename.replace(".jpg", "-6bit.png"), palettedata_6bit, 4)
+  # Create a list for the Fot loop to iterate through.
+  colourRanges = [
+                    ['1-bit, 2 colour pallette.', 128, tempfilename.replace(".jpg", "-1bit.png"), palettedata_1bit],
+                    ['2-bit, 4 colour palette (greyscale).', 64, tempfilename.replace(".jpg", "-2bit.png"), palettedata_2bit],
+                    ['3-bit, 8 colour palette.', 32, tempfilename.replace(".jpg", "-3bit.png"), palettedata_3bit],
+                    ['4-bit, 16 colour palette.', 16, tempfilename.replace(".jpg", "-4bit.png"), palettedata_4bit],
+                    ['4-bit, 16 palette (greyscale).', 16, tempfilename.replace(".jpg", "-4bit-mono.png"), palettedata_4bit_mono],
+                    ['5-bit, 32 colour palette.', 8, tempfilename.replace(".jpg", "-5bit.png"), palettedata_5bit],
+                    ['6-bit, 64 colour palette.', 4, tempfilename.replace(".jpg", "6-bit.png"), palettedata_6bit]
+           ]
 
-  return os.path.join(os.getcwd(), passedPath)
+  for eachColour in colourRanges:
+    retdFilename, retdFileSize, retdW, retdH = reduceColourDepth(tempfilename, eachColour[2], eachColour[3], eachColour[1])
+    createdImages[eachColour[0]] = {'filename': retdFilename,'filesize': retdFileSize,'width': retdW,'height': retdH}
+
+  #Add an extra for the original file at end of the list.
+  createdImages['24-bit, 16.7 million colour palette.'] = {'filename': tempfilename,'filesize': os.path.getsize(tempfilename),'width': 500,'height': 375}
+
+  return  createdImages
 
 
 def extractMetaData(passedInput):
@@ -121,13 +148,13 @@ def extractMetaData(passedInput):
   return exifData
 
 
-def createHTML(passedHtmlPath, passedHtmlFile, passedHtmlTemplate, passedFilename, passedMetaData):
+def createHTML(passedHtmlPath, passedHtmlFile, passedHtmlTemplate, passedFilename, passedResolutions, passedColourDepths, passedMetaData):
 
   with open(os.path.join(passedHtmlPath,passedHtmlFile), 'w+', encoding='utf-8') as outputFile:
     title = "Data Representation"
     subs = jinja2.Environment( 
                   loader=jinja2.FileSystemLoader('./')      
-                  ).get_template(passedHtmlTemplate).render(title=title,filename=passedFilename,metadata=passedMetaData) 
+                  ).get_template(passedHtmlTemplate).render(title=title,filename=passedFilename,metadata=passedMetaData,colourdepths=passedColourDepths,resolutions=passedResolutions) 
 
     outputFile.write(subs)
 
@@ -146,14 +173,14 @@ args = parser.parse_args()
 if __name__ == '__main__':
 
   # Create different pixel resolutions of the file.
-  createDifferentResolutions(args.file, args.path)
+  createdDifferentResolutions = createDifferentResolutions(args.file, args.path)
 
   # Create different colour depth versions of the medium size image  
-  createDifferentColourDepths("500-375.jpg", args.path)
+  createdDifferentColourDepths = createDifferentColourDepths("500-375.jpg", args.path)
 
   # Extract some (interesting) metadata from the original file.
   createdMetaData = extractMetaData(args.file)
   
   # Open the HTML output file and display it to the user.
-  open_new_tab('file://' + os.getcwd() + '/' + args.path + '/' + createHTML(args.path, args.out, args.template, args.file, createdMetaData))
+  open_new_tab('file://' + os.getcwd() + '/' + args.path + '/' + createHTML(args.path, args.out, args.template, args.file, createdDifferentResolutions, createdDifferentColourDepths, createdMetaData))
 
